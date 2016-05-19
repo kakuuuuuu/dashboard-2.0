@@ -1,0 +1,76 @@
+{% extends 'dash/base.html' %}
+{% block nav %}
+<li><a href="/accounts/logout">Logout</a></li>
+<li><a href="/dashboard">Go Back</a></li>
+{% if user.id == request.user.id %}
+<li><a href="/accounts/edit/{{user.id}}">Edit Profile</a></li>
+{% endif %}
+{% endblock %}
+{% block content%}
+  <div id='banner' class='jumbotron'>
+    <div id='wrapper' class='container'>
+      <h1>{{user.first_name}} {{user.last_name}}</h1>
+    </div>
+  </div>
+  <div class='container'>
+  <div class='container'>
+    <p>User ID: #{{user.id}}</p>
+    <p>Username: {{user.username}}</p>
+    <p>Email: {{user.email}}</p>
+    <p>Description: {{profile.description}}</p>
+  </div>
+  <div class='container'>
+    <h4>Leave a message:</h4>
+    <form action="/posts/post/{{user.id}}/" method='post'>
+      {% csrf_token %}
+      <div class='form-group'>
+        <textarea class='form-control' name='post'></textarea>
+      </div>
+      <div class='form-group'>
+        <input class ='btn' type='submit' value='Submit' />
+      </div>
+    </form>
+  </div>
+  <div id='posts' class='container'>
+    {% for post in posts %}
+    {% if post %}
+    <div class='post container'>
+      <h4><a href='/users/{{post.user.id}}'>{{post.user.first_name}} {{post.user.last_name}}</a> says,</h4>
+      <p>{{post.post}}</p>
+      <p>{{post.created_at}}
+        {% if post.user.id == request.user.id %} |
+        <a href='/posts/delete/post/{{user.id}}/{{post.id}}'>Delete</a>
+        {% endif %}</p>
+      <div class='comments container col-md-12'>
+        {% for comment in comments %}
+        {% if comment and comment.post == post %}
+        <div class='container comment col-md-12'>
+          <p><a href='/users/{{comment.user.id}}'>{{comment.user.first_name}} {{comment.user.last_name}}</a> commented,</p>
+          <p>{{comment.comment}}</p>
+          <p>{{comment.created_at}}
+            {% if comment.user.id == request.user.id %}|
+            <a href='/posts/delete/comment/{{user.id}}/{{comment.id}}'> Delete</a>
+            {% endif %}
+          </p>
+          </div>
+        {% endif %}
+        {% endfor %}
+      </div>
+      <div class='container col-md-9'>
+        <p>Leave a comment:</p>
+        <form class='col-md-8 form-inline' action="/posts/comment/{{user.id}}/{{post.id}}/" method='post'>
+          {% csrf_token %}
+          <div class=form-group>
+            <textarea class='form-control' name='comment'></textarea>
+          </div>
+          <div class=form-group>
+            <input class ='form-control' type='submit' value='Submit' />
+          </div>
+        </form>
+      </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

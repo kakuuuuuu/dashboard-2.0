@@ -1,0 +1,30 @@
+*{
+
+}
+nav{
+  background-color:#4A6B8A;
+}
+#posts{
+  margin-top: 20px;
+}
+.post{
+  margin-bottom: 20px;
+  border-radius:10px;
+  background-color: #eee;
+  padding: 10px;
+}
+.comments{
+  margin-bottom: 20px;
+}
+#wrapper{
+
+}
+#banner{
+  background-color: #eee;
+}
+.comment{
+  padding:5px;
+  background-color:white;
+  border-radius:10px;
+  margin-bottom:10px;
+}

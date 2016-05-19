@@ -1,0 +1,57 @@
+{% extends 'dash/base.html' %}
+{% block nav %}
+<li><a href="/accounts/logout">Logout</a></li>
+<li><a href="/users/{{user.id}}">Profile</a></li>
+{% if request.user.is_staff %}
+<li><a href="/accounts/register">Add User</a></li>
+{% endif %}
+{% endblock %}
+{% block content %}
+<div class='jumbotron'>
+  <div class='container'>
+    <h1>Welcome, {{user.first_name}}</h1>
+  </div>
+</div>
+{% if messages %}
+<div class='container'>
+  <ul class='messages'>
+    {% for message in messages %}
+    <h3>{{message}}</h3>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+<div class='container'>
+  <table class='table'>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Created At</th>
+      <th>User Level</th>
+      {% if user.is_staff %}
+      <th>Actions</th>
+      {% endif %}
+    </tr>
+    {% for users in object_list %}
+    <tr>
+      <td>{{users.id}}</td>
+      <td><a href='/users/{{users.id}}'>{{users.first_name}}  {{users.last_name}}</a></td>
+      <td>{{users.email}}</td>
+      <td>{{users.date_joined}}</td>
+      {% if users.is_staff %}
+      <td>Admin</td>
+      {% else %}
+      <td>Normal</td>
+      {% endif %}
+      {% if user.is_staff %}
+      <td class='btn-group'>
+          <a class='btn btn-primary' href="{% url 'accounts-edit' users.id %}">Edit</a>
+          <a class='btn btn-primary' href="{% url 'accounts-delete' users.id %}">Delete</a>
+      </td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

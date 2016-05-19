@@ -1,0 +1,32 @@
+{% extends 'accounts/base.html' %}
+{% block nav %}
+<li><a href="/accounts/login">Login</a></li>
+{% endblock %}
+{% block content %}
+<div class='container'>
+  {% if request.user.is_authenticated %}
+  <h1>Add User</h1>
+  {% else %}
+  <h1>Register Here</h1>
+  {% endif %}
+</div>
+<div class='container col-md-4'>
+
+  <form action="{% url 'accounts-register' %}" method="post">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class='form-group col-md-12'>
+      <label for={{field.label}}>{{field.label}}:</label><span class='pull-right col-md-6'>{{field}}</span>
+    </div>
+    {% endfor %}
+    <div class='form-group col-md-12'>
+      <input class='form-control' type='submit' value='submit' />
+    </div>
+    {% if request.user.is_authenticated == False %}
+    <div class='container col-md-12'>
+      <p class='text-center'>Already have an account? <a href='/accounts/login'>Login</a></p>
+    </div>
+    {% endif %}
+  </form>
+</div>
+{% endblock %}

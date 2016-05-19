@@ -1,0 +1,18 @@
+{% extends 'dash/base.html' %}
+{% block nav %}
+{% if request.user.is_authenticated %}
+<li><a href="/accounts/logout">Logout</a></li>
+{% else %}
+<li><a href="/accounts/login">Login</a></li>
+{% endif %}
+<li><a href="/users/{{user.id}}">Profile</a></li>
+{% endblock %}
+{% block content%}
+  <div class='jumbotron'>
+    <div class='container'>
+      <h1>Welcome to Not Facebook</h1>
+      <p>Connect with all your fake friends on the largest and most expansive fake social network</p>
+      <a href="/accounts/register" class="btn btn-primary btn-lg" role="button">Get Started</a>
+    </div>
+  </div>
+{% endblock %}
